@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -16,9 +18,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MonitoredEndpoint {
+public class MonitoredEndpoint implements IdentifiedDomain{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     UUID id;
 
     String name;

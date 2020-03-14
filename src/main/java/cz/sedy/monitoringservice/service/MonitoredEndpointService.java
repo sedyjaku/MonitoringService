@@ -1,21 +1,20 @@
 package cz.sedy.monitoringservice.service;
 
 import cz.sedy.monitoringservice.domain.MonitoredEndpoint;
-import cz.sedy.monitoringservice.repository.MonitoredEndpointRepository;
+import cz.sedy.monitoringservice.service.command.MonitoredEndpointCreateCommand;
+import cz.sedy.monitoringservice.service.command.MonitoredEndpointUpdateCommand;
 import java.util.List;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Component;
+import java.util.UUID;
 
-@Component
-@RequiredArgsConstructor
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class MonitoredEndpointService {
+public interface MonitoredEndpointService {
 
-    MonitoredEndpointRepository monitoredEndpointRepository;
+    List<MonitoredEndpoint> getAll();
 
-    public List<MonitoredEndpoint> getAll(){
-        return monitoredEndpointRepository.findAll();
-    }
+    MonitoredEndpoint getById(UUID monitoredEndpointId);
+
+    MonitoredEndpoint create(MonitoredEndpointCreateCommand createCommand);
+
+    MonitoredEndpoint update(MonitoredEndpointUpdateCommand updateCommand);
+
+    void deleteById(UUID monitoringResultId);
 }

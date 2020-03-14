@@ -3,6 +3,8 @@ package cz.sedy.monitoringservice.domain;
 import java.time.Instant;
 import java.util.UUID;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,9 +16,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MonitoringResult {
+public class MonitoringResult implements IdentifiedDomain {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     UUID id;
 
     Instant checkedAt;

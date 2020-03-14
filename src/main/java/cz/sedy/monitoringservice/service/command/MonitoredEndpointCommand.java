@@ -1,20 +1,18 @@
-package cz.sedy.monitoringservice.controller.dto.response;
+package cz.sedy.monitoringservice.service.command;
 
 import java.time.Instant;
 import java.util.UUID;
-import javax.persistence.Id;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@NoArgsConstructor
+@SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MonitoredEndpointResponse {
-
-    UUID id;
+@NoArgsConstructor
+public class MonitoredEndpointCommand {
 
     String name;
 
