@@ -1,0 +1,88 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: sedyjaku
+      changes:
+        - createTable:
+            tableName: monitored_endpoint
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: monitored_interval
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_checked_at
+                  type: datetime
+              - column:
+                  name: owner_id
+                  type: varchar(36)
+        - addForeignKeyConstraint:
+            baseColumnNames: owner_id
+            baseTableName: monitored_endpoint
+            constraintName: fk_monitored_endpoint_owner
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: user
+        - createTable:
+            tableName: monitoring_result
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: payload
+                  type: varchar(2000)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: status_code
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: checked_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: monitored_endpoint_id
+                  type: varchar(36)
+        - addForeignKeyConstraint:
+            baseColumnNames: monitored_endpoint_id
+            baseTableName: monitoring_result
+            constraintName: fk_monitoring_result_monitored_endpoint
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: monitored_endpoint
+        - renameColumn:
+            tableName: user
+            columnDataType: varchar(50)
+            newColumnName: username
+            oldColumnName: user_name
