@@ -39,14 +39,14 @@ public class MonitoredEndpointController {
     MonitoredEndpointUpdateCommandMapper monitoredEndpointUpdateCommandMapper;
 
     @GetMapping("/{monitoredEndpointId}")
-    MonitoredEndpointResponse getById(@PathVariable @NotNull UUID monitoredEndpointId) {
+    public MonitoredEndpointResponse getById(@PathVariable @NotNull UUID monitoredEndpointId) {
         return monitoredEndpointResponseMapper.mapFromDomain(
                 monitoredEndpointService.getById(monitoredEndpointId)
         );
     }
 
     @PostMapping()
-    MonitoredEndpointResponse create(@RequestBody @Valid @NotNull MonitoredEndpointRequest request) {
+    public MonitoredEndpointResponse create(@RequestBody @Valid @NotNull MonitoredEndpointRequest request) {
         return monitoredEndpointResponseMapper.mapFromDomain(
                 monitoredEndpointService.create(
                         monitoredEndpointCreateCommandMapper.mapFromRequest(request)
@@ -55,7 +55,7 @@ public class MonitoredEndpointController {
     }
 
     @PutMapping("/{monitoredEndpointId}")
-    MonitoredEndpointResponse update(
+    public MonitoredEndpointResponse update(
             @PathVariable @NotNull UUID monitoredEndpointId,
             @RequestBody @Valid @NotNull MonitoredEndpointRequest request) {
         return monitoredEndpointResponseMapper.mapFromDomain(
@@ -67,7 +67,7 @@ public class MonitoredEndpointController {
 
     @DeleteMapping("/{monitoredEndpointId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteById(@PathVariable @NotNull UUID monitoredEndpointId) {
+    public void deleteById(@PathVariable @NotNull UUID monitoredEndpointId) {
         monitoredEndpointService.deleteById(monitoredEndpointId);
     }
 

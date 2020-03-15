@@ -34,6 +34,7 @@ public class MonitoringResultControllerGetMonitoringResultsTest extends Integrat
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .get(ENDPOINT_URL, MONITORED_ENDPOINT_ID.toString())
                 .then()
                 .log()

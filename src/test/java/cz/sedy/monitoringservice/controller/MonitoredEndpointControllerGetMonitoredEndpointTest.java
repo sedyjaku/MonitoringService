@@ -27,6 +27,7 @@ public class MonitoredEndpointControllerGetMonitoredEndpointTest extends Integra
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .get(ENDPOINT_URL, MONITORED_ENDPOINT_ID.toString())
                 .then()
                 .log()
@@ -42,6 +43,7 @@ public class MonitoredEndpointControllerGetMonitoredEndpointTest extends Integra
     }
 
     @Test
+    @Sql(scripts = "classpath:/db/user/single-user.sql")
     @Sql(scripts = "classpath:/db/cleanup.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldReturnNotFound_WithNonExistingEntity(){
         RestAssured
@@ -51,6 +53,7 @@ public class MonitoredEndpointControllerGetMonitoredEndpointTest extends Integra
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .get(ENDPOINT_URL, MONITORED_ENDPOINT_ID.toString())
                 .then()
                 .log()

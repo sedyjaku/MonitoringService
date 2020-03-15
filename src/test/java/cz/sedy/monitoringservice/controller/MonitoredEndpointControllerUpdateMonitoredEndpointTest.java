@@ -48,6 +48,7 @@ public class MonitoredEndpointControllerUpdateMonitoredEndpointTest extends Inte
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .body(request)
                 .put(ENDPOINT_URL, MONITORED_ENDPOINT_ID.toString())
                 .then()
@@ -99,6 +100,7 @@ public class MonitoredEndpointControllerUpdateMonitoredEndpointTest extends Inte
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .body(request)
                 .put(ENDPOINT_URL, MONITORED_ENDPOINT_ID.toString())
                 .then()
@@ -109,6 +111,7 @@ public class MonitoredEndpointControllerUpdateMonitoredEndpointTest extends Inte
     }
 
     @Test
+    @Sql(scripts = "classpath:/db/user/single-user.sql")
     @Sql(scripts = "classpath:/db/cleanup.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldReturnNotFound_WithNonExistingEndpoint() {
         MonitoredEndpointRequest request = MonitoredEndpointRequest.builder()
@@ -127,6 +130,7 @@ public class MonitoredEndpointControllerUpdateMonitoredEndpointTest extends Inte
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .body(request)
                 .put(ENDPOINT_URL, MONITORED_ENDPOINT_ID.toString())
                 .then()
@@ -154,6 +158,7 @@ public class MonitoredEndpointControllerUpdateMonitoredEndpointTest extends Inte
                 .all()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .when()
                 .body(request)
                 .put(ENDPOINT_URL, MONITORED_ENDPOINT_ID.toString())

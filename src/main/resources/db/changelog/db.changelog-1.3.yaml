@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: sedyjaku
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: created_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+            tableName: monitoring_result

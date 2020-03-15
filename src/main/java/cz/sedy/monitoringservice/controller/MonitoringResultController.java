@@ -50,7 +50,7 @@ public class MonitoringResultController {
     }
 
     @GetMapping("/{monitoringResultId}")
-    MonitoringResultResponse getById(
+    public MonitoringResultResponse getById(
             @PathVariable @NotNull UUID monitoredEndpointId,
             @PathVariable @NotNull UUID monitoringResultId) {
         return monitoringResultResponseMapper.mapFromDomain(
@@ -59,7 +59,7 @@ public class MonitoringResultController {
     }
 
     @PostMapping()
-    MonitoringResultResponse create(
+    public MonitoringResultResponse create(
             @PathVariable @NotNull UUID monitoredEndpointId,
             @RequestBody @Valid @NotNull MonitoringResultRequest request) {
         return monitoringResultResponseMapper.mapFromDomain(
@@ -70,7 +70,7 @@ public class MonitoringResultController {
     }
 
     @PutMapping("/{monitoringResultId}")
-    MonitoringResultResponse update(
+    public MonitoringResultResponse update(
             @PathVariable @NotNull UUID monitoredEndpointId,
             @PathVariable @NotNull UUID monitoringResultId,
             @RequestBody @Valid @NotNull MonitoringResultRequest request) {
@@ -83,7 +83,7 @@ public class MonitoringResultController {
 
     @DeleteMapping("/{monitoringResultId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteById(
+    public void deleteById(
             @PathVariable @NotNull UUID monitoredEndpointId,
             @PathVariable @NotNull UUID monitoringResultId) {
         monitoringResultService.deleteByIdAndMonitoredEndpointId(monitoringResultId, monitoredEndpointId);

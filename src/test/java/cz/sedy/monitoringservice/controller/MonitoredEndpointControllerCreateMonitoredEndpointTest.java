@@ -46,6 +46,7 @@ public class MonitoredEndpointControllerCreateMonitoredEndpointTest extends Inte
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .body(request)
                 .post(ENDPOINT_URL)
                 .then()
@@ -77,6 +78,7 @@ public class MonitoredEndpointControllerCreateMonitoredEndpointTest extends Inte
 
 
     @Test
+    @Sql(scripts = "classpath:/db/user/single-user.sql")
     @Sql(scripts = "classpath:/db/cleanup.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldReturnNotFound_WithNonExistingOwner() {
         MonitoredEndpointRequest request = MonitoredEndpointRequest.builder()
@@ -95,6 +97,7 @@ public class MonitoredEndpointControllerCreateMonitoredEndpointTest extends Inte
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .body(request)
                 .post(ENDPOINT_URL)
                 .then()
@@ -105,6 +108,7 @@ public class MonitoredEndpointControllerCreateMonitoredEndpointTest extends Inte
     }
 
     @Test
+    @Sql(scripts = "classpath:/db/user/single-user.sql")
     @Sql(scripts = "classpath:/db/cleanup.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldReturnBadRequest_WithInvalidRequest() {
         MonitoredEndpointRequest request = MonitoredEndpointRequest.builder()
@@ -122,6 +126,7 @@ public class MonitoredEndpointControllerCreateMonitoredEndpointTest extends Inte
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .body(request)
                 .post(ENDPOINT_URL)
                 .then()

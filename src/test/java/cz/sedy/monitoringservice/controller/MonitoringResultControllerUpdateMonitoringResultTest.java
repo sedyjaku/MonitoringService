@@ -47,6 +47,7 @@ public class MonitoringResultControllerUpdateMonitoringResultTest extends Integr
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .body(request)
                 .put(ENDPOINT_URL, MONITORED_ENDPOINT_ID, MONITORING_RESULT_ID)
                 .then()
@@ -72,6 +73,7 @@ public class MonitoringResultControllerUpdateMonitoringResultTest extends Integr
 
 
     @Test
+    @Sql(scripts = "classpath:/db/user/single-user.sql")
     @Sql(scripts = "classpath:/db/cleanup.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldReturnNotFound_WithNonExistingMonitoringResult() {
         MonitoringResultRequest request = MonitoringResultRequest.builder()
@@ -87,6 +89,7 @@ public class MonitoringResultControllerUpdateMonitoringResultTest extends Integr
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .body(request)
                 .put(ENDPOINT_URL, MONITORED_ENDPOINT_ID, MONITORING_RESULT_ID)
                 .then()
@@ -97,6 +100,7 @@ public class MonitoringResultControllerUpdateMonitoringResultTest extends Integr
     }
 
     @Test
+    @Sql(scripts = "classpath:/db/user/single-user.sql")
     @Sql(scripts = "classpath:/db/cleanup.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldReturnBadRequest_WithInvalidRequest() {
         MonitoringResultRequest request = MonitoringResultRequest.builder()
@@ -111,6 +115,7 @@ public class MonitoringResultControllerUpdateMonitoringResultTest extends Integr
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
+                .header("access-token", "39548dbf-8129-42eb-881f-645a6d2ed099")
                 .body(request)
                 .put(ENDPOINT_URL, MONITORED_ENDPOINT_ID, MONITORING_RESULT_ID)
                 .then()
