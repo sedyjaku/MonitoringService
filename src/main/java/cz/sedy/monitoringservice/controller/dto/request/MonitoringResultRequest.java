@@ -1,7 +1,6 @@
 package cz.sedy.monitoringservice.controller.dto.request;
 
 import java.time.Instant;
-import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;

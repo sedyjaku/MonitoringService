@@ -2,7 +2,6 @@ package cz.sedy.monitoringservice.controller.dto.request;
 
 import java.time.Instant;
 import java.util.UUID;
-import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -22,4 +21,6 @@ public class MonitoredEndpointRequest {
     Instant lastCheckedAt;
 
     Long monitoredInterval;
+
+    UUID ownerId;
 }

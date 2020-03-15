@@ -2,7 +2,6 @@ package cz.sedy.monitoringservice.mapping.domain;
 
 import cz.sedy.monitoringservice.domain.IdentifiedDomain;
 import cz.sedy.monitoringservice.exception.NotFoundException;
-import java.util.UUID;
 import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +17,7 @@ public class IdentifiedDomainMapper {
 
     EntityManager entityManager;
 
-    public <T extends IdentifiedDomain> T getById(@TargetType Class<T> identifiedDomainClass, UUID id) {
+    public <T extends IdentifiedDomain> T getById(@TargetType Class<T> identifiedDomainClass, String id) {
         if (id == null) {
             return null;
         }

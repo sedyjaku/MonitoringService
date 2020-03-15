@@ -23,4 +23,6 @@ public class MonitoredEndpointCommand {
     Instant lastCheckedAt;
 
     Long monitoredInterval;
+
+    UUID ownerId;
 }
