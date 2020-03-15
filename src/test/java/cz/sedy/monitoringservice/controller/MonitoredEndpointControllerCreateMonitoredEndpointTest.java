@@ -20,12 +20,14 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TES
 
 public class MonitoredEndpointControllerCreateMonitoredEndpointTest extends IntegrationTestParent {
 
+    public static final UUID OWNER_ID = UUID.fromString("6a514e57-ee31-4643-a8c7-0172934cc77b");
     private static final String ENDPOINT_URL = "/monitored-endpoints";
 
     @Autowired
     MonitoredEndpointRepository monitoredEndpointRepository;
 
     @Test
+    @Sql(scripts = "classpath:/db/user/single-user.sql")
     @Sql(scripts = "classpath:/db/cleanup.sql", executionPhase = AFTER_TEST_METHOD)
     public void shouldCreateMonitoredEndpoint_WithValidRequest() {
         MonitoredEndpointRequest request = MonitoredEndpointRequest.builder()
@@ -34,6 +36,7 @@ public class MonitoredEndpointControllerCreateMonitoredEndpointTest extends Inte
                 .monitoredInterval(10L)
                 .name("Test monitored endpoint name")
                 .url("some.random.url")
+                .ownerId(OWNER_ID)
                 .build();
 
         RestAssured
@@ -54,6 +57,7 @@ public class MonitoredEndpointControllerCreateMonitoredEndpointTest extends Inte
                 .body("lastCheckedAt", Is.is(Instant.ofEpochSecond(9214213L).toString()))
                 .body("monitoredInterval", Is.is(10))
                 .body("url", Is.is("some.random.url"))
+                .body("ownerId", Is.is(OWNER_ID.toString()))
                 .statusCode(HttpStatus.OK.value());
 
         List<MonitoredEndpoint> monitoredEndpoints = monitoredEndpointRepository.findAll();
@@ -67,6 +71,7 @@ public class MonitoredEndpointControllerCreateMonitoredEndpointTest extends Inte
         MatcherAssert.assertThat(monitoredEndpoint.getLastCheckedAt(), Is.is(Instant.ofEpochSecond(9214213L)));
         MatcherAssert.assertThat(monitoredEndpoint.getMonitoredInterval(), Is.is(10L));
         MatcherAssert.assertThat(monitoredEndpoint.getUrl(), Is.is("some.random.url"));
+        MatcherAssert.assertThat(monitoredEndpoint.getOwner().getId(), Is.is(OWNER_ID.toString()));
 
     }
 
@@ -97,5 +102,32 @@ public class MonitoredEndpointControllerCreateMonitoredEndpointTest extends Inte
                 .all()
                 .assertThat()
                 .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    @Sql(scripts = "classpath:/db/cleanup.sql", executionPhase = AFTER_TEST_METHOD)
+    public void shouldReturnBadRequest_WithInvalidRequest() {
+        MonitoredEndpointRequest request = MonitoredEndpointRequest.builder()
+                .createdAt(Instant.ofEpochSecond(52152153L))
+                .lastCheckedAt(Instant.ofEpochSecond(9214213L))
+                .monitoredInterval(10L)
+                .name("Test monitored endpoint name")
+                .ownerId(UUID.fromString("63df919a-c557-4f43-8ad4-ea38f539b391"))
+                .build();
+
+        RestAssured
+                .given()
+                .log()
+                .all()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .body(request)
+                .post(ENDPOINT_URL)
+                .then()
+                .log()
+                .all()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }

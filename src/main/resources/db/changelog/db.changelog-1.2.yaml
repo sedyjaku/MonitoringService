@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: sedyjaku
+      changes:
+        - modifyDataType:
+            tableName: user
+            columnName: access_token
+            newDataType: varchar(36)

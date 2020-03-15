@@ -15,18 +15,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class IntegrationTestParent {
+public abstract class IntegrationTestParent {
 
     @LocalServerPort
     private Integer port;
 
-//    @Value("${server.servlet.context-path}")
-//    private String contextPath;
-
     @Before
     public void setUpRestAssured() {
         RestAssured.port = port;
-//        RestAssured.basePath = contextPath;
         RestAssured.config = RestAssuredConfig.config()
                 .objectMapperConfig(
                         new ObjectMapperConfig().jackson2ObjectMapperFactory(

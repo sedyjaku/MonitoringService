@@ -1,24 +1,21 @@
 package cz.sedy.monitoringservice.controller;
 
-import cz.sedy.monitoringservice.controller.dto.request.MonitoredEndpointRequest;
 import cz.sedy.monitoringservice.controller.dto.request.MonitoringResultRequest;
-import cz.sedy.monitoringservice.controller.dto.response.MonitoredEndpointResponse;
 import cz.sedy.monitoringservice.controller.dto.response.MonitoringResultResponse;
-import cz.sedy.monitoringservice.mapping.command.MonitoredEndpointCreateCommandMapper;
-import cz.sedy.monitoringservice.mapping.command.MonitoredEndpointUpdateCommandMapper;
 import cz.sedy.monitoringservice.mapping.command.MonitoringResultCreateCommandMapper;
 import cz.sedy.monitoringservice.mapping.command.MonitoringResultUpdateCommandMapper;
-import cz.sedy.monitoringservice.mapping.response.MonitoredEndpointResponseMapper;
 import cz.sedy.monitoringservice.mapping.response.MonitoringResultResponseMapper;
-import cz.sedy.monitoringservice.service.MonitoredEndpointService;
 import cz.sedy.monitoringservice.service.MonitoringResultService;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +32,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(produces = APPLICATION_JSON_VALUE, value = "/monitored-endpoints/{monitoredEndpointId}/monitoring-results")
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@Validated
 public class MonitoringResultController {
 
     MonitoringResultService monitoringResultService;
@@ -44,7 +42,7 @@ public class MonitoringResultController {
 
     @GetMapping
     public List<MonitoringResultResponse> getAllByMonitoredEndpointId(
-            @PathVariable UUID monitoredEndpointId
+            @PathVariable @NotNull UUID monitoredEndpointId
     ) {
         return monitoringResultService.getAllByMonitoredEndpointId(monitoredEndpointId).stream()
                 .map(monitoringResultResponseMapper::mapFromDomain)
@@ -53,8 +51,8 @@ public class MonitoringResultController {
 
     @GetMapping("/{monitoringResultId}")
     MonitoringResultResponse getById(
-            @PathVariable UUID monitoredEndpointId,
-            @PathVariable UUID monitoringResultId) {
+            @PathVariable @NotNull UUID monitoredEndpointId,
+            @PathVariable @NotNull UUID monitoringResultId) {
         return monitoringResultResponseMapper.mapFromDomain(
                 monitoringResultService.getByIdAndMonitoredEndpointId(monitoringResultId, monitoredEndpointId)
         );
@@ -62,8 +60,8 @@ public class MonitoringResultController {
 
     @PostMapping()
     MonitoringResultResponse create(
-            @PathVariable UUID monitoredEndpointId,
-            @RequestBody MonitoringResultRequest request) {
+            @PathVariable @NotNull UUID monitoredEndpointId,
+            @RequestBody @Valid @NotNull MonitoringResultRequest request) {
         return monitoringResultResponseMapper.mapFromDomain(
                 monitoringResultService.create(
                         monitoringResultCreateCommandMapper.mapFromRequest(request, monitoredEndpointId)
@@ -71,11 +69,11 @@ public class MonitoringResultController {
         );
     }
 
-    @PutMapping("/{monitoredEndpointId}")
+    @PutMapping("/{monitoringResultId}")
     MonitoringResultResponse update(
-            @PathVariable UUID monitoredEndpointId,
-            @PathVariable UUID monitoringResultId,
-            @RequestBody MonitoringResultRequest request) {
+            @PathVariable @NotNull UUID monitoredEndpointId,
+            @PathVariable @NotNull UUID monitoringResultId,
+            @RequestBody @Valid @NotNull MonitoringResultRequest request) {
         return monitoringResultResponseMapper.mapFromDomain(
                 monitoringResultService.update(
                         monitoringResultUpdateCommandMapper.mapFromRequest(request, monitoredEndpointId, monitoringResultId)
@@ -86,8 +84,8 @@ public class MonitoringResultController {
     @DeleteMapping("/{monitoringResultId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteById(
-            @PathVariable UUID monitoredEndpointId,
-            @PathVariable UUID monitoringResultId) {
+            @PathVariable @NotNull UUID monitoredEndpointId,
+            @PathVariable @NotNull UUID monitoringResultId) {
         monitoringResultService.deleteByIdAndMonitoredEndpointId(monitoringResultId, monitoredEndpointId);
     }
 

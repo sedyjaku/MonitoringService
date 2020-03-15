@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -22,33 +23,41 @@ public class DefaultMonitoringResultService implements cz.sedy.monitoringservice
     MonitoringResultMapper monitoringResultMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public List<MonitoringResult> getAllByMonitoredEndpointId(UUID monitoredEndpointId) {
-        return monitoringResultRepository.findAll();
+        return monitoringResultRepository.findAllByMonitoredEndpointId(monitoredEndpointId.toString());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public MonitoringResult getByIdAndMonitoredEndpointId(UUID monitoringResultId, UUID monitoredEndpointId) {
-        return monitoringResultRepository.findById(monitoringResultId)
+        return monitoringResultRepository.findByMonitoredEndpointIdAndId(
+                monitoredEndpointId.toString(), monitoringResultId.toString())
                 .orElseThrow(() -> NotFoundException.by(MonitoringResult.class, monitoringResultId));
     }
 
     @Override
+    @Transactional
     public MonitoringResult create(MonitoringResultCreateCommand createCommand) {
         MonitoringResult monitoringResult = monitoringResultMapper.mapFromCreateCommand(createCommand);
         return monitoringResultRepository.save(monitoringResult);
     }
 
     @Override
+    @Transactional
     public MonitoringResult update(MonitoringResultUpdateCommand updateCommand) {
-        MonitoringResult updatedDomain = monitoringResultRepository.findById(updateCommand.getId())
+        MonitoringResult updatedDomain = monitoringResultRepository.findByMonitoredEndpointIdAndId(
+                updateCommand.getMonitoredEndpointId().toString(), updateCommand.getId().toString())
                 .orElseThrow(() -> NotFoundException.by(MonitoringResult.class, updateCommand.getId()));
         monitoringResultMapper.updateFromUpdateCommand(updatedDomain, updateCommand);
         return updatedDomain;
     }
 
     @Override
+    @Transactional
     public void deleteByIdAndMonitoredEndpointId(UUID monitoringResultId, UUID monitoredEndpointId) {
-        MonitoringResult deletedDomain = monitoringResultRepository.findById(monitoringResultId)
+        MonitoringResult deletedDomain = monitoringResultRepository.findByMonitoredEndpointIdAndId(
+                monitoredEndpointId.toString(), monitoringResultId.toString())
                 .orElseThrow(() -> NotFoundException.by(MonitoringResult.class, monitoringResultId)
                 );
         monitoringResultRepository.delete(deletedDomain);
