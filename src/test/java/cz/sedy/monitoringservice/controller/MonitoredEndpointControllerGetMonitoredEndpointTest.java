@@ -59,6 +59,6 @@ public class MonitoredEndpointControllerGetMonitoredEndpointTest extends Integra
                 .log()
                 .all()
                 .assertThat()
-                .statusCode(HttpStatus.NOT_FOUND.value());
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 }

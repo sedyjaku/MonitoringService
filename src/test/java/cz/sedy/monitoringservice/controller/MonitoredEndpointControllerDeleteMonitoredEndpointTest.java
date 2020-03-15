@@ -60,6 +60,6 @@ public class MonitoredEndpointControllerDeleteMonitoredEndpointTest extends Inte
                 .log()
                 .all()
                 .assertThat()
-                .statusCode(HttpStatus.NOT_FOUND.value());
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 }

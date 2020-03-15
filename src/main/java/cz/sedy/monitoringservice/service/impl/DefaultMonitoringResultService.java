@@ -1,10 +1,13 @@
 package cz.sedy.monitoringservice.service.impl;
 
 import cz.sedy.monitoringservice.domain.MonitoringResult;
+import cz.sedy.monitoringservice.domain.User;
 import cz.sedy.monitoringservice.exception.NotFoundException;
 import cz.sedy.monitoringservice.mapping.domain.MonitoringResultMapper;
 import cz.sedy.monitoringservice.repository.MonitoringResultRepository;
+import cz.sedy.monitoringservice.security.spec.MonitoringResultUserSpecification;
 import cz.sedy.monitoringservice.service.MonitoringResultService;
+import cz.sedy.monitoringservice.service.SecurityService;
 import cz.sedy.monitoringservice.service.command.MonitoringResultCreateCommand;
 import cz.sedy.monitoringservice.service.command.MonitoringResultUpdateCommand;
 import java.util.List;
@@ -24,21 +27,26 @@ public class DefaultMonitoringResultService implements MonitoringResultService {
 
     MonitoringResultRepository monitoringResultRepository;
     MonitoringResultMapper monitoringResultMapper;
+    SecurityService securityService;
 
     @Override
     @Transactional(readOnly = true)
     public List<MonitoringResult> getAllByMonitoredEndpointId(UUID monitoredEndpointId) {
+        securityService.checkUserAuthorityOnMonitoredEndpoint(monitoredEndpointId);
         return monitoringResultRepository.findAllByMonitoredEndpointId(monitoredEndpointId.toString());
     }
 
     @Override
     public List<MonitoringResult> search(Specification<MonitoringResult> specification, Long limit) {
-        return monitoringResultRepository.findAll(specification, PageRequest.of(0, limit.intValue())).getContent();
+        Specification<MonitoringResult> specificationWithUser = addUserSpecification(specification);
+        return monitoringResultRepository.findAll(specificationWithUser, PageRequest.of(0, limit.intValue())).getContent();
     }
+
 
     @Override
     @Transactional(readOnly = true)
     public MonitoringResult getByIdAndMonitoredEndpointId(UUID monitoringResultId, UUID monitoredEndpointId) {
+        securityService.checkUserAuthorityOnMonitoredEndpoint(monitoredEndpointId);
         return monitoringResultRepository.findByMonitoredEndpointIdAndId(
                 monitoredEndpointId.toString(), monitoringResultId.toString())
                 .orElseThrow(() -> NotFoundException.by(MonitoringResult.class, monitoringResultId));
@@ -69,6 +77,11 @@ public class DefaultMonitoringResultService implements MonitoringResultService {
                 .orElseThrow(() -> NotFoundException.by(MonitoringResult.class, monitoringResultId)
                 );
         monitoringResultRepository.delete(deletedDomain);
+    }
+
+    private Specification<MonitoringResult> addUserSpecification(Specification<MonitoringResult> specification) {
+        User user = securityService.getUser();
+        return specification.and(new MonitoringResultUserSpecification(user.getId()));
     }
 
 }

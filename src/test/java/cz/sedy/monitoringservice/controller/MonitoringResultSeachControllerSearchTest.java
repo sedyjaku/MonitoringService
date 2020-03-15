@@ -88,4 +88,29 @@ public class MonitoringResultSeachControllerSearchTest  extends IntegrationTestP
                 .body("[9].id", Is.is("0b3ec18d-2564-493b-93c6-38972dbf604d"))
                 .statusCode(HttpStatus.OK.value());
     }
+
+
+    @Test
+    @Sql(scripts = "classpath:/db/monitoring-results/multiple-monitoring-results-under-different-endpoints.sql")
+    @Sql(scripts = "classpath:/db/cleanup.sql", executionPhase = AFTER_TEST_METHOD)
+    public void shouldGetEmptyList_WithDifferentUser() {
+        RestAssured
+                .given()
+                .log()
+                .all()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .header("access-token", "4b089703-05e4-4954-893a-d73a92cb0813")
+                .queryParam("url", "test.url-e7a8ef3ae24c")
+                .queryParam("sort", "-createdAt")
+                .queryParam("limit", 10)
+                .get(ENDPOINT_URL)
+                .then()
+                .log()
+                .all()
+                .assertThat()
+                .body("size()", Is.is(0))
+                .statusCode(HttpStatus.OK.value());
+    }
 }

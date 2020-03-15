@@ -64,6 +64,6 @@ public class MonitoringResultControllerGetMonitoringResultTest extends Integrati
                 .log()
                 .all()
                 .assertThat()
-                .statusCode(HttpStatus.NOT_FOUND.value());
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 }

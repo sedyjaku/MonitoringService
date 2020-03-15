@@ -5,6 +5,7 @@ import cz.sedy.monitoringservice.exception.NotFoundException;
 import cz.sedy.monitoringservice.mapping.domain.MonitoredEndpointMapper;
 import cz.sedy.monitoringservice.repository.MonitoredEndpointRepository;
 import cz.sedy.monitoringservice.service.MonitoredEndpointService;
+import cz.sedy.monitoringservice.service.SecurityService;
 import cz.sedy.monitoringservice.service.command.MonitoredEndpointCreateCommand;
 import cz.sedy.monitoringservice.service.command.MonitoredEndpointUpdateCommand;
 import java.util.UUID;
@@ -21,10 +22,12 @@ public class DefaultMonitoredEndpointService implements MonitoredEndpointService
 
     MonitoredEndpointRepository monitoredEndpointRepository;
     MonitoredEndpointMapper monitoredEndpointMapper;
+    SecurityService securityService;
 
     @Override
     @Transactional(readOnly = true)
     public MonitoredEndpoint getById(UUID monitoredEndpointId) {
+        securityService.checkUserAuthorityOnMonitoredEndpoint(monitoredEndpointId);
         return monitoredEndpointRepository.findById(monitoredEndpointId.toString())
                 .orElseThrow(() -> NotFoundException.by(MonitoredEndpoint.class, monitoredEndpointId));
     }
@@ -48,6 +51,7 @@ public class DefaultMonitoredEndpointService implements MonitoredEndpointService
     @Override
     @Transactional
     public void deleteById(UUID monitoredEndpointId) {
+        securityService.checkUserAuthorityOnMonitoredEndpoint(monitoredEndpointId);
         MonitoredEndpoint deletedDomain = monitoredEndpointRepository.findById(monitoredEndpointId.toString())
                 .orElseThrow(() -> NotFoundException.by(MonitoredEndpoint.class, monitoredEndpointId));
         monitoredEndpointRepository.delete(deletedDomain);

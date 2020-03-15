@@ -1,5 +1,6 @@
 insert into user(id, username, email, access_token)
-values ('6a514e57-ee31-4643-a8c7-0172934cc77b', 'testuser123456', 'testuser123456@test.te', '39548dbf-8129-42eb-881f-645a6d2ed099');
+values ('6a514e57-ee31-4643-a8c7-0172934cc77b', 'testuser123456', 'testuser123456@test.te', '39548dbf-8129-42eb-881f-645a6d2ed099'),
+('f0a90f28-b221-451b-989d-a460d5a78752', 'differentUser', 'testuser123456@test.te', '4b089703-05e4-4954-893a-d73a92cb0813');
 
 insert into monitored_endpoint(id, name, url, monitored_interval, created_at, last_checked_at, owner_id)
 values
