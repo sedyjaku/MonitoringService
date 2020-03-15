@@ -29,7 +29,6 @@ ext {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'de.codecentric:spring-boot-admin-starter-client'
 	implementation 'de.codecentric:spring-boot-admin-starter-server'
@@ -50,8 +49,8 @@ dependencies {
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
-//	testImplementation 'org.testcontainers:mysql:1.13.+'
-//	testCompile 'org.testcontainers:testcontainers:1.13.+'
+	testImplementation 'org.testcontainers:mysql:1.13.+'
+	testCompile 'org.testcontainers:testcontainers:1.13.+'
 }
 
 dependencyManagement {
