@@ -35,7 +35,7 @@ public class RestExceptionHandler {
     ResponseEntity<ErrorResponse> handleUnknownUser(UnknownUserException exception){
         log.error("User was not found", exception);
         return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
+                .status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), "Unknown user"));
     }
@@ -46,6 +46,6 @@ public class RestExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), "User not authorized"));
+                .body(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "User not authorized"));
     }
 }

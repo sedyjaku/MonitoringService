@@ -22,7 +22,7 @@ public class MonitoringAuthenticationProvider implements AuthenticationProvider 
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         MonitoringAuthentication monitoringAuthentication = (MonitoringAuthentication) authentication;
         User user = userRepository.findByAccessToken(monitoringAuthentication.getAccessToken())
-                .orElseThrow(UnknownUserException::new);
+                .orElseThrow(() -> new UnknownUserException("Invalid access token"));
         monitoringAuthentication.setUser(user);
         return monitoringAuthentication;
     }

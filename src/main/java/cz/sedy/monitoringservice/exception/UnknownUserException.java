@@ -1,4 +1,10 @@
 package cz.sedy.monitoringservice.exception;
 
-public class UnknownUserException extends RuntimeException {
+import org.springframework.security.core.AuthenticationException;
+
+public class UnknownUserException extends AuthenticationException {
+
+    public UnknownUserException(String msg) {
+        super(msg);
+    }
 }

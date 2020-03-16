@@ -61,4 +61,24 @@ public class MonitoredEndpointControllerGetMonitoredEndpointTest extends Integra
                 .assertThat()
                 .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
+
+
+    @Test
+    @Sql(scripts = "classpath:/db/user/single-user.sql")
+    @Sql(scripts = "classpath:/db/cleanup.sql", executionPhase = AFTER_TEST_METHOD)
+    public void shouldReturnUnauthorized_WithMissingHeaderAccessToken(){
+        RestAssured
+                .given()
+                .log()
+                .all()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .get(ENDPOINT_URL, MONITORED_ENDPOINT_ID.toString())
+                .then()
+                .log()
+                .all()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
 }
