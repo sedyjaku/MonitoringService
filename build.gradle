@@ -53,7 +53,6 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
 	testImplementation 'org.testcontainers:mysql:1.13.+'
-	testCompile 'org.testcontainers:testcontainers:1.13.+'
 }
 
 dependencyManagement {
